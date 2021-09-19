@@ -14,7 +14,7 @@ else
   useradd -m -p ${NOMINATIM_PASSWORD} nominatim
 fi
 
-IMPORT_FINISHED=/var/lib/postgresql/12/main/import-finished
+IMPORT_FINISHED=/var/lib/postgresql/13/main/import-finished
 
 if [ ! -f ${IMPORT_FINISHED} ]; then
   /app/init.sh
@@ -29,5 +29,5 @@ service postgresql start
 service apache2 start
 
 # fork a process and wait for it
-tail -f /var/log/postgresql/postgresql-12-main.log &
+tail -f /var/log/postgresql/postgresql-13-main.log &
 wait
