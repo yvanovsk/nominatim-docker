@@ -1,4 +1,4 @@
-FROM ubuntu:focal AS build
+FROM debian:bullseye AS build
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C.UTF-8
@@ -32,9 +32,9 @@ RUN true \
         libboost-filesystem-dev \
         # PostgreSQL.
         postgresql-contrib \
-        postgresql-server-dev-12 \
-        postgresql-12-postgis-3 \
-        postgresql-12-postgis-3-scripts \
+        postgresql-server-dev-13 \
+        postgresql-13-postgis-3 \
+        postgresql-13-postgis-3-scripts \
         # PHP and Apache 2.
         php \
         php-intl \
@@ -61,8 +61,8 @@ RUN true \
 
 # Configure postgres.
 RUN true \
-    && echo "host all all 0.0.0.0/0 md5" >> /etc/postgresql/12/main/pg_hba.conf \
-    && echo "listen_addresses='*'" >> /etc/postgresql/12/main/postgresql.conf
+    && echo "host all all 0.0.0.0/0 md5" >> /etc/postgresql/13/main/pg_hba.conf \
+    && echo "listen_addresses='*'" >> /etc/postgresql/13/main/postgresql.conf
 
 # Osmium install to run continuous updates.
 RUN pip3 install osmium
@@ -93,7 +93,7 @@ RUN true \
         linux-libc-dev \
         libclang-*-dev \
         build-essential \
-        postgresql-server-dev-12 \
+        postgresql-server-dev-13 \
     && apt-get clean \
     # Clear temporary files and directories.
     && rm -rf \
@@ -112,8 +112,8 @@ COPY conf.d/apache.conf /etc/apache2/sites-enabled/000-default.conf
 CMD a2enconf nominatim
 
 # Postgres config overrides to improve import performance (but reduce crash recovery safety)
-COPY conf.d/postgres-import.conf /etc/postgresql/12/main/conf.d/
-COPY conf.d/postgres-tuning.conf /etc/postgresql/12/main/conf.d/
+COPY conf.d/postgres-import.conf /etc/postgresql/13/main/conf.d/
+COPY conf.d/postgres-tuning.conf /etc/postgresql/13/main/conf.d/
 
 COPY config.sh /app/config.sh
 COPY init.sh /app/init.sh
