@@ -34,9 +34,9 @@ fi
 
 
 # if we use a bind mount then the PG directory is empty and we have to create it
-if [ ! -f /var/lib/postgresql/12/main/PG_VERSION ]; then
-  chown postgres /var/lib/postgresql/12/main
-  sudo -u postgres /usr/lib/postgresql/12/bin/initdb -D /var/lib/postgresql/12/main
+if [ ! -f /var/lib/postgresql/13/main/PG_VERSION ]; then
+  chown postgres /var/lib/postgresql/13/main
+  sudo -u postgres /usr/lib/postgresql/13/bin/initdb -D /var/lib/postgresql/13/main
 fi
 
 sudo service postgresql start && \
@@ -58,7 +58,7 @@ sudo -E -u nominatim nominatim replication --init
 sudo service postgresql stop
 
 # Remove slightly unsafe postgres config overrides that made the import faster
-rm /etc/postgresql/12/main/conf.d/postgres-import.conf
+rm /etc/postgresql/13/main/conf.d/postgres-import.conf
 
 echo "Deleting downloaded dumps in ${PROJECT_DIR}"
 rm -f ${PROJECT_DIR}/*sql.gz
